@@ -1,7 +1,7 @@
 # API EARTHQUAKE
 
 
-##Instalacion
+## Instalacion
 
 ```bash
 $ bundle install
