@@ -1,24 +1,28 @@
-# README
+# API EARTHQUAKE
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+##Instalacion
 
-* Ruby version
+```bash
+$ bundle install
+```
+**Pasos para correr aplicacion**
 
-* System dependencies
+## Running 
 
-* Configuration
+```bash
+$ rails db:migrate
+$ rails db:schema:load
+$ rails s
+```
 
-* Database creation
+## Task
+**Correr trask para obtener datos desd el sitio (earthquake.usgs.gov)**
 
-* Database initialization
+```bash
+$ rails earthquake:get_data
+```
 
-* How to run the test suite
+* Ruby version  3.2.3
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Rails version 7.1.3.2
