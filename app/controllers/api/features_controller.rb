@@ -1,14 +1,10 @@
 class Api::FeaturesController < ApplicationController
+  before_action :validate_pagination_params, only: :index
+  MAX_PER_PAGE =1000
   def index
     page = params[:page] || 1
-    per_page = params[:per_page] || 100
+    per_page = [params[:per_page].to_i,MAX_PER_PAGE ].min 
     mag_types = (params[:mag_type] ) || []
-
-
-    # Eliminar elementos vacíos y asegurarse de que haya solo un nivel de array
-    mag_types = mag_types.flatten.reject(&:empty?) || []
-
-
     #@earthquakes = Eventearthquake.limit(50).offset(50)
     
     #all earthquake
@@ -16,7 +12,8 @@ class Api::FeaturesController < ApplicationController
     
     #if filters mag_type
     if mag_types.any?
-      mag_types = mag_types[0].split("'") 
+      mag_types = mag_types.map { |type| type.delete("'\\")  } # Eliminar el apóstrofo de cada elemento
+
       features_query = features_query.where(mag_type: mag_types )
     end
 
@@ -64,6 +61,17 @@ class Api::FeaturesController < ApplicationController
         }
   
       }
+    end
+  end
+
+  def validate_pagination_params
+    unless params[:page].present? && params[:per_page].present?
+      render json: { error: "Los parámetros 'page' y 'per_page' son obligatorios" }, status: :bad_request
+    end
+
+    per_page = params[:per_page].to_i
+    unless per_page > 0 && per_page <= MAX_PER_PAGE
+      render json: { error: "El parámetro 'per_page' debe ser un entero mayor que 0 y menor o igual a #{MAX_PER_PAGE}" }, status: :bad_request
     end
   end
 

@@ -1,6 +1,8 @@
 class Eventearthquake < ApplicationRecord
   self.inheritance_column = :custom_type
   
+  has_many  :comments
+  
   validates :type ,presence:true
   validates :external_id ,presence:true
   validates :place ,presence:true
