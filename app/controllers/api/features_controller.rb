@@ -2,7 +2,8 @@ class Api::FeaturesController < ApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 100
-    mag_types = (params[:mag_type] )[0].split("'")
+    mag_types = (params[:mag_type] ) || []
+
 
     # Eliminar elementos vacíos y asegurarse de que haya solo un nivel de array
     mag_types = mag_types.flatten.reject(&:empty?) || []
@@ -15,7 +16,8 @@ class Api::FeaturesController < ApplicationController
     
     #if filters mag_type
     if mag_types.any?
-      features_query = features_query.where(mag_type: mag_types)
+      mag_types = mag_types[0].split("'") 
+      features_query = features_query.where(mag_type: mag_types )
     end
 
     earthquake = features_query.paginate(page: page, per_page: per_page)
@@ -26,9 +28,13 @@ class Api::FeaturesController < ApplicationController
         current_page: earthquake.current_page,
         total:earthquake.total_entries,
         per_page: earthquake.per_page,
+      },
+      filter: {
         page: page,
+        per_page: earthquake.per_page,
         mag_type:mag_types,
-      }
+
+      },
     }, status: :ok
   end
 
