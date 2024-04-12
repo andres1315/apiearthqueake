@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_11_225058) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_12_002909) do
   create_table "eventearthquakes", force: :cascade do |t|
     t.string "type"
     t.string "external_id"
     t.decimal "magnitude", precision: 10, scale: 6
     t.string "place"
-    t.string "time"
+    t.bigint "time"
     t.boolean "tsunami"
     t.string "mag_type"
     t.string "title"
