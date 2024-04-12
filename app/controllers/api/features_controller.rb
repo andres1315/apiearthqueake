@@ -1,4 +1,4 @@
-class FeaturesController < ApplicationController
+class Api::FeaturesController < ApplicationController
   def index
     @earthquakes = Eventearthquake.limit(50).offset(50)
     render json: {
