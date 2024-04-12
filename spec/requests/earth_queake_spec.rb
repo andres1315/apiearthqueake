@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'debug'
 
 RSpec.describe "EarthQueakes", type: :request do
-  describe "GET /earthquake" do
+  describe "GET /features" do
     it "should return OK and empty data" do
-      get '/earthquake'
+      get '/features'
       payload = JSON.parse(response.body)
       expect(payload).to be_empty
       expect(response).to  have_http_status(:ok)
@@ -15,7 +15,7 @@ RSpec.describe "EarthQueakes", type: :request do
     let!(:event) {create_list(:eventearthquake, 10)}
  
     it "return all eventsearthquake" do
-      get '/earthquake'
+      get '/features'
       payload = JSON.parse(response.body)
       #binding.break   
 
