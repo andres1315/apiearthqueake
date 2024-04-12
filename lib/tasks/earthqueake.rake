@@ -6,6 +6,8 @@ namespace :earthquake do
     if response.success?
       data = JSON.parse(response.body)
       #rangos para magnitude [-1.0, 10.0], latitude[1] [-90.0, 90.0] y longitude[0]: [-180.0, 180.0]
+      earthquake_invalid=0
+      new_earthquake=0
       data["features"].each do |feature|
         feature_id =  feature['id']
         longitude =   feature['geometry']['coordinates'][0]
@@ -22,13 +24,15 @@ namespace :earthquake do
 
         #validate range and id earthquake
         if Eventearthquake.exists?(external_id: feature_id) || !(magnitude.between?(-1.0,10.0) && latitude.between?(-90.0,90.0) && longitude.between?(-180.0,180.0))
-          puts "Id exist on db or range to lat and long invalid"
+          earthquake_invalid+=1
           next
         end
         #save on db
         Eventearthquake.create(type: type,external_id: feature_id, magnitude: magnitude, place: place, time: time, tsunami: tsunami, mag_type:mag_type, title: title, longitude: longitude, latitude: latitude, url: url)
-
+        new_earthquake+=1
+     
       end
+      puts "found #{earthquake_invalid} with id exist on db or range to lat and long invali, and create #{new_earthquake} news earthquake"
     else
       puts "Error al obtener datos corriendo la tarea earthquake:get_data #{response.code}"
     end
