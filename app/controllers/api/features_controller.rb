@@ -67,11 +67,13 @@ class Api::FeaturesController < ApplicationController
   def validate_pagination_params
     unless params[:page].present? && params[:per_page].present?
       render json: { error: "Los parámetros 'page' y 'per_page' son obligatorios" }, status: :bad_request
+      return
     end
 
     per_page = params[:per_page].to_i
     unless per_page > 0 && per_page <= MAX_PER_PAGE
       render json: { error: "El parámetro 'per_page' debe ser un entero mayor que 0 y menor o igual a #{MAX_PER_PAGE}" }, status: :bad_request
+      return
     end
   end
 
